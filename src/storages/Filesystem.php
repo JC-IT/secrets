@@ -30,6 +30,10 @@ class Filesystem implements StorageInterface
     {
         $file = $this->filePath($secret);
         if (!is_file($file)) {
+            if (!file_exists(dirname($file))) {
+                mkdir(dirname($file), 0777, true);
+            }
+
             touch($file);
         }
     }

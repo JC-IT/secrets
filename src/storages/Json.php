@@ -7,6 +7,8 @@ use JCIT\secrets\interfaces\StorageInterface;
 
 class Json implements StorageInterface
 {
+    private array $_cache;
+
     public function __construct(
         private string $file
     ) {
@@ -18,7 +20,7 @@ class Json implements StorageInterface
             return null;
         }
 
-        $secrets = json_decode(file_get_contents($this->file));
+        $secrets = json_decode(file_get_contents($this->file), true);
         return $secrets[$secret] ?? null;
     }
 
