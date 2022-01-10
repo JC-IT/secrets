@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace JCIT\secrets;
 
-use common\exceptions\SecretsException;
+use JCIT\secrets\exceptions\SecretsException;
 use JCIT\secrets\interfaces\SecretsInterface;
 use JCIT\secrets\interfaces\StorageInterface;
 

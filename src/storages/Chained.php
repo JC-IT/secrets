@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace JCIT\secrets\storage;
+namespace JCIT\secrets\storages;
 
 use JCIT\secrets\exceptions\StorageException;
 use JCIT\secrets\interfaces\StorageInterface;

@@ -21,12 +21,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "JCIT\\": "src/"
+            "JCIT\\secrets\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "JCIT\\tests\\": "tests/"
+            "JCIT\\tests\\secrets\\": "tests/"
         }
     },
     "scripts": {

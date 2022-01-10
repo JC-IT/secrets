@@ -24,6 +24,7 @@ to the `require` section of your `composer.json` file.
 
 ## TODO
 - Add tests
+- Write extractor based on https://github.com/JC-IT/yii2-secrets/blob/master/src/actions/Extract.php
 
 ## Credits
 - [Joey Claessen](https://github.com/joester89)
