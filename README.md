@@ -42,6 +42,20 @@ $secrets = new \JCIT\secrets\Secrets(
 );
 ```
 
+Note that the order in the `Chained` storage does matter, wherever a secret is found first that value will be returned.
+
+## Usage
+
+After initialization, just call the following code:
+```php
+$secrets->get('<secret>', '<optional default value>');
+```
+
+To be sure the secret is set use:
+```php
+$secrets->getAndThrowOnNull('<secret>');
+```
+
 ## Extension
 
 In order to implement your own storage, just extend the `\JCIT\secrets\interfaces\StorageInterface`.
