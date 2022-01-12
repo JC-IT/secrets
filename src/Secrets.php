@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace JCIT\secrets;
@@ -14,17 +15,17 @@ class Secrets implements SecretsInterface
     ) {
     }
 
-    public function get(string $secret, string|int|null $default = null): string|int|null
+    public function get(string $secret, string|int|bool|null $default = null): string|int|bool|null
     {
         return $this->storage->get($secret) ?? $default;
     }
 
-    public function getAndThrowOnEmpty(string $secret): string|int
+    public function getAndThrowOnNull(string $secret): string|int|bool
     {
         $result = $this->get($secret);
 
         if (is_null($result)) {
-            throw SecretsException::notFound($secret);
+            throw new SecretsException('Secret could not be found: ' . $secret);
         }
 
         return $result;

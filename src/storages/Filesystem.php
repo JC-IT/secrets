@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace JCIT\secrets\storages;
@@ -7,6 +8,9 @@ use JCIT\secrets\interfaces\StorageInterface;
 
 class Filesystem implements StorageInterface
 {
+    /**
+     * @var array<string, string|int|bool|null>
+     */
     private array $_cache = [];
 
     public function __construct(
@@ -19,7 +23,7 @@ class Filesystem implements StorageInterface
         return rtrim($this->basePath, '/') . '/' . ltrim($secret, '/');
     }
 
-    public function get(string $secret): string|int|null
+    public function get(string $secret): string|int|bool|null
     {
         if (array_key_exists($secret, $this->_cache)) {
             return $this->_cache[$secret];

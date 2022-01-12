@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace JCIT\secrets\storages;
@@ -8,29 +9,36 @@ use JCIT\secrets\interfaces\StorageInterface;
 
 class Chained implements StorageInterface
 {
-    private $_cache = [];
+    /**
+     * @var array<string, string|int|bool|null>
+     */
+    private array $_cache = [];
+
+    /**
+     * @var array<StorageInterface>
+     */
+    private array $storages = [];
 
     public function __construct(
-        private array $storages,
-        private bool $returnFirstFound = true,
+        StorageInterface ...$storages,
     ) {
-        foreach ($this->storages as $storage) {
-            if (!$storage instanceof StorageInterface) {
-                throw new StorageException('Storage must be instance of ' . StorageInterface::class);
-            }
+        foreach ($storages as $storage) {
+            $this->storages[] = $storage;
         }
     }
 
-    public function get(string $secret): string|int|null
+    public function get(string $secret): string|int|bool|null
     {
         if (array_key_exists($secret, $this->_cache)) {
             return $this->_cache[$secret];
         }
 
+        $result = null;
+
         foreach ($this->storages as $storage) {
             $result = $storage->get($secret);
 
-            if (!is_null($result) && $this->returnFirstFound) {
+            if (!is_null($result)) {
                 $this->_cache[$secret] = $result;
                 return $result;
             }
@@ -40,8 +48,10 @@ class Chained implements StorageInterface
         return $result;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function prepare(string $secret, array $occurrences): void
     {
-        throw new StorageException('Please implement your own prepare.');
     }
 }
