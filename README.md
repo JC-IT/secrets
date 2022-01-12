@@ -29,8 +29,24 @@ to the `require` section of your `composer.json` file.
 
 ## Configuration
 
+It is recommended to use this package only in configuration files before your application is loaded, this way they won't
+be dumped by your application on chrashes or something unexpected.
+
+```php
+$secrets = new \JCIT\secrets\Secrets(
+    new \JCIT\secrets\storages\Chained(
+        new \JCIT\secrets\storages\Cache(getenv()),
+        new \JCIT\secrets\storages\Json('/run/env.json'),
+        new \JCIT\secrets\storages\Filesystem(__DIR__ . '/secrets'),
+    )
+);
+```
+
+## Extension
+
+In order to implement your own storage, just extend the `\JCIT\secrets\interfaces\StorageInterface`.
+
 ## TODO
-- Add tests
 - Write extractor based on https://github.com/JC-IT/yii2-secrets/blob/master/src/actions/Extract.php
 
 ## Credits
