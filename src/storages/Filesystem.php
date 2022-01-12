@@ -7,6 +7,8 @@ use JCIT\secrets\interfaces\StorageInterface;
 
 class Filesystem implements StorageInterface
 {
+    private array $_cache = [];
+
     public function __construct(
         private string $basePath
     ) {
@@ -19,11 +21,19 @@ class Filesystem implements StorageInterface
 
     public function get(string $secret): string|int|null
     {
+        if (array_key_exists($secret, $this->_cache)) {
+            return $this->_cache[$secret];
+        }
+
         $file = $this->filePath($secret);
         if (!is_file($file)) {
-            return null;
+            $result = null;
+        } else {
+            $result = file_get_contents($file);
         }
-        return file_get_contents($file);
+
+        $this->_cache[$secret] = $result;
+        return $this->_cache[$secret];
     }
 
     public function prepare(string $secret, array $occurrences): void

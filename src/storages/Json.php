@@ -20,8 +20,11 @@ class Json implements StorageInterface
             return null;
         }
 
-        $secrets = json_decode(file_get_contents($this->file), true);
-        return $secrets[$secret] ?? null;
+        if (!isset($this->_cache)) {
+            $this->_cache = json_decode(file_get_contents($this->file), true);
+        }
+
+        return $this->_cache[$secret] ?? null;
     }
 
     public function prepare(string $secret, array $occurrences): void

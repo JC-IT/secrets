@@ -8,6 +8,8 @@ use JCIT\secrets\interfaces\StorageInterface;
 
 class Chained implements StorageInterface
 {
+    private $_cache = [];
+
     public function __construct(
         private array $storages,
         private bool $returnFirstFound = true,
@@ -21,14 +23,20 @@ class Chained implements StorageInterface
 
     public function get(string $secret): string|int|null
     {
+        if (array_key_exists($secret, $this->_cache)) {
+            return $this->_cache[$secret];
+        }
+
         foreach ($this->storages as $storage) {
             $result = $storage->get($secret);
 
             if (!is_null($result) && $this->returnFirstFound) {
+                $this->_cache[$secret] = $result;
                 return $result;
             }
         }
 
+        $this->_cache[$secret] = $result;
         return $result;
     }
 
